@@ -24,8 +24,8 @@ class ReservationsControllerTest < ActionDispatch::IntegrationTest
       "total_price": "4500.00"
     }
 
-    assert_difference ['Reservation.count', 'Guest.count'] do
-      assert_difference 'GuestPhoneNumber.count', 1 do
+    assert_difference [ "Reservation.count", "Guest.count" ] do
+      assert_difference "GuestPhoneNumber.count", 1 do
         post reservations_path, params: payload, as: :json
       end
     end
@@ -80,8 +80,8 @@ class ReservationsControllerTest < ActionDispatch::IntegrationTest
       }
     }
 
-    assert_difference ['Reservation.count', 'Guest.count'] do
-      assert_difference 'GuestPhoneNumber.count', 2 do
+    assert_difference [ "Reservation.count", "Guest.count" ] do
+      assert_difference "GuestPhoneNumber.count", 2 do
         post reservations_path, params: payload, as: :json
       end
     end

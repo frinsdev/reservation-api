@@ -7,6 +7,6 @@ class CreateGuestPhoneNumbers < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :guest_phone_numbers, [:guest_id, :phone_number], unique: true
+    add_index :guest_phone_numbers, [ :guest_id, :phone_number ], unique: true
   end
 end

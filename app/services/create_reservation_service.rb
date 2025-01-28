@@ -16,7 +16,7 @@ class CreateReservationService
     end
 
   rescue StandardError => e
-    Result.new(success?: false, reservation: nil, errors: [@errors.presence || e.message])
+    Result.new(success?: false, reservation: nil, errors: [ @errors.presence || e.message ])
   end
 
   private
@@ -49,7 +49,7 @@ class CreateReservationService
   def guest_phone_numbers
     phones = fetch_value(guest_mapping[:phone_numbers])
 
-    phones.is_a?(Array) ? phones : [phones].compact
+    phones.is_a?(Array) ? phones : [ phones ].compact
   end
 
   def reservation_params
@@ -59,16 +59,16 @@ class CreateReservationService
   def fetch_value(path)
     return nil if path.nil?
 
-    keys = path.split('.')
+    keys = path.split(".")
     keys.reduce(params) { |hash, key| hash&.[](key) }
   end
 
   def payload_format
     @payload_format ||= begin
       config = Rails.configuration.payload_mappings
-      format = config['formats'].find { |_, format_config| matches_structure?(params, format_config['structure'].with_indifferent_access) }
+      format = config["formats"].find { |_, format_config| matches_structure?(params, format_config["structure"].with_indifferent_access) }
 
-      raise StandardError, 'Invalid payload format' unless format
+      raise StandardError, "Invalid payload format" unless format
 
       format[0]
     end
@@ -88,10 +88,10 @@ class CreateReservationService
   end
 
   def guest_mapping
-    Rails.configuration.payload_mappings.dig('formats', payload_format, 'mappings', 'guest').symbolize_keys
+    Rails.configuration.payload_mappings.dig("formats", payload_format, "mappings", "guest").symbolize_keys
   end
 
   def reservation_mapping
-    Rails.configuration.payload_mappings.dig('formats', payload_format, 'mappings', 'reservation').symbolize_keys
+    Rails.configuration.payload_mappings.dig("formats", payload_format, "mappings", "reservation").symbolize_keys
   end
 end

@@ -19,4 +19,3 @@ class ReservationTest < ActiveSupport::TestCase
     should validate_presence_of(:payout_price)
   end
 end
-
