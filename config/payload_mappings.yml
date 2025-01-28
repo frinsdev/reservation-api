@@ -1,0 +1,83 @@
+formats:
+  v1:
+    structure:
+      start_date: {}
+      end_date: {}
+      nights: {}
+      guests: {}
+      adults: {}
+      children: {}
+      infants: {}
+      status: {}
+      guest:
+        id: {}
+        first_name: {}
+        last_name: {}
+        phone: {}
+        email: {}
+      currency: {}
+      payout_price: {}
+      security_price: {}
+      total_price: {}
+    mappings:
+      guest:
+        email: guest.email
+        first_name: guest.first_name
+        last_name: guest.last_name
+        phone_numbers: guest.phone
+      reservation:
+        start_date: start_date
+        end_date: end_date
+        number_of_nights: nights
+        number_of_guests: guests
+        number_of_adults: adults
+        number_of_infants: infants
+        number_of_children: children
+        status: status
+        currency: currency
+        payout_price: payout_price
+        security_price: security_price
+        total_price: total_price
+
+  v2:
+    structure:
+      reservation:
+        start_date: {}
+        end_date: {}
+        expected_payout_amount: {}
+        guest_details:
+          localized_description: {}
+          number_of_adults: {}
+          number_of_children: {}
+          number_of_infants: {}
+        guest_email: {}
+        guest_first_name: {}
+        guest_id: {}
+        guest_last_name: {}
+        guest_phone_numbers: []
+        listing_security_price_accurate: {}
+        host_currency: {}
+        nights: {}
+        number_of_guests: {}
+        status_type: {}
+        total_paid_amount_accurate: {}
+    mappings:
+      guest:
+        email: reservation.guest_email
+        first_name: reservation.guest_first_name
+        last_name: reservation.guest_last_name
+        phone_numbers: reservation.guest_phone_numbers
+      reservation:
+        start_date: reservation.start_date
+        end_date: reservation.end_date
+        localized_description: reservation.guest_details.localized_description
+        number_of_nights: reservation.nights
+        number_of_guests: reservation.number_of_guests
+        number_of_adults: reservation.guest_details.number_of_adults
+        number_of_infants: reservation.guest_details.number_of_infants
+        number_of_children: reservation.guest_details.number_of_children
+        status: reservation.status_type
+        currency: reservation.host_currency
+        payout_price: reservation.expected_payout_amount
+        security_price: reservation.listing_security_price_accurate
+        total_price: reservation.total_paid_amount_accurate
