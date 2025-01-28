@@ -47,5 +47,5 @@ group :development, :test do
 end
 
 group :test do
-  gem 'shoulda', '~> 4.0'
+  gem "shoulda", "~> 4.0"
 end
