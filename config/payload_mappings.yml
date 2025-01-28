@@ -81,3 +81,52 @@ formats:
         payout_price: reservation.expected_payout_amount
         security_price: reservation.listing_security_price_accurate
         total_price: reservation.total_paid_amount_accurate
+
+  hotels_com:
+    structure:
+      booking_info:
+        reservation_dates:
+          check_in: {}
+          check_out: {}
+          total_nights: {}
+        price_details:
+          currency_code: {}
+          host_payout: {}
+          security_deposit: {}
+          total_amount: {}
+        occupancy:
+          total: {}
+          breakdown:
+            adult_count: {}
+            child_count: {}
+            infant_count: {}
+        booking_status: {}
+        customer:
+          profile:
+            customer_id: {}
+            name:
+              given_name: {}
+              family_name: {}
+            contact:
+              email_address: {}
+              telephone: []
+    mappings:
+      guest:
+        email: "booking_info.customer.profile.contact.email_address"
+        first_name: "booking_info.customer.profile.name.given_name"
+        last_name: "booking_info.customer.profile.name.family_name"
+        phone_numbers: "booking_info.customer.profile.contact.telephone"
+
+      reservation:
+        start_date: "booking_info.reservation_dates.check_in"
+        end_date: "booking_info.reservation_dates.check_out"
+        number_of_nights: "booking_info.reservation_dates.total_nights"
+        number_of_guests: "booking_info.occupancy.total"
+        number_of_adults: "booking_info.occupancy.breakdown.adult_count"
+        number_of_children: "booking_info.occupancy.breakdown.child_count"
+        number_of_infants: "booking_info.occupancy.breakdown.infant_count"
+        status: "booking_info.booking_status"
+        currency: "booking_info.price_details.currency_code"
+        payout_price: "booking_info.price_details.host_payout"
+        security_price: "booking_info.price_details.security_deposit"
+        total_price: "booking_info.price_details.total_amount"
