@@ -56,6 +56,9 @@ class CreateReservationService
     reservation_mapping.transform_values { |path| fetch_value(path) }
   end
 
+  # Retrieves a value from the params hash using a dot-notation path
+  # Example: fetch_value("reservation.guest_details.localized_description") will traverse nested hashes
+  # Returns nil if the path doesn't exist
   def fetch_value(path)
     return nil if path.nil?
 
@@ -63,6 +66,27 @@ class CreateReservationService
     keys.reduce(params) { |hash, key| hash&.[](key) }
   end
 
+  # Returns true if all required keys exist and nested structures match
+  def matches_structure?(payload, structure)
+    structure.all? do |key, expected|
+      value = payload[key]
+      return false unless value.present?
+
+      if expected.is_a?(Hash) && !expected.empty?
+        # If expected is a non-empty hash, recursively check its structure
+        value.is_a?(Hash) && matches_structure?(value, expected.with_indifferent_access)
+      else
+        # If expected is either:
+        # 1. Not a hash (like an array [])
+        # 2. An empty hash {}
+        # We only care that the key exists (which we already checked with value.present?)
+        true
+      end
+    end
+  end
+
+  # Determines which payload format matches the incoming request
+  # Compares the request structure against predefined formats in payload_mappings.yml
   def payload_format
     @payload_format ||= begin
       config = Rails.configuration.payload_mappings
@@ -71,19 +95,6 @@ class CreateReservationService
       raise StandardError, "Invalid payload format" unless format
 
       format[0]
-    end
-  end
-
-  def matches_structure?(payload, structure)
-    structure.all? do |key, expected|
-      value = payload[key]
-      return false unless value.present?
-
-      if expected.is_a?(Hash) && !expected.empty?
-        value.is_a?(Hash) && matches_structure?(value, expected.with_indifferent_access)
-      else
-        true
-      end
     end
   end
 
